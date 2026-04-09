@@ -7,7 +7,7 @@
 ---
 
 <p align="center">
-  <img src="frontend/src/assets/hero.png" alt="MailTrace Hero" width="600px" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+  <img src="frontend/src/assets/favicon.png" alt="MailTrace Hero" width="600px" style="border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
 </p>
 
 <h2 align="center"><b>🚀 Introduction</b></h2>
