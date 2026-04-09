@@ -116,7 +116,7 @@ const SendEmail = ({ activeConfig, addLog, showNotification, templates = [], con
                 });
 
                 addLog('info', `Sending email ${i + 1} of ${count}...`);
-                const response = await axios.post('http://localhost:3001/api/send-email', tempFormData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/send-email`, tempFormData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
 

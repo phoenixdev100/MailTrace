@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -7,7 +8,11 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Multer setup for attachments (memory storage)
@@ -21,7 +26,7 @@ const upload = multer({ storage: storage });
  */
 app.post('/api/test-connection', async (req, res) => {
     const { config } = req.body;
-    
+
     if (!config || !config.host || !config.port) {
         return res.status(400).json({ success: false, message: 'Invalid SMTP configuration' });
     }
@@ -39,7 +44,7 @@ app.post('/api/test-connection', async (req, res) => {
  */
 app.post('/api/send-email', upload.array('attachments'), async (req, res) => {
     const { config, emailData } = req.body;
-    
+
     // Parse JSON strings if they were sent as part of multipart/form-data
     const parsedConfig = typeof config === 'string' ? JSON.parse(config) : config;
     const parsedEmailData = typeof emailData === 'string' ? JSON.parse(emailData) : emailData;
@@ -60,13 +65,24 @@ app.post('/api/send-email', upload.array('attachments'), async (req, res) => {
         const result = await sendEmail(parsedConfig, parsedEmailData);
         res.json(result);
     } catch (error) {
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             message: error.message,
             code: error.code,
             command: error.command
         });
     }
+});
+
+/**
+ * Root route
+ */
+app.get('/', (req, res) => {
+    res.json({
+        name: 'MailTrace Backend API',
+        version: '1.0.0',
+        status: 'online'
+    });
 });
 
 /**

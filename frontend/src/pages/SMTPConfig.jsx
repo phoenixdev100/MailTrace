@@ -39,7 +39,7 @@ const SMTPConfig = ({ configs, setConfigs, activeConfigId, setActiveConfigId, ad
         setIsTesting(true);
         addLog('info', `Testing connection to ${config.host}:${config.port}...`);
         try {
-            const response = await axios.post('http://localhost:3001/api/test-connection', { config });
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/test-connection`, { config });
             if (response.data.success) {
                 addLog('success', `Connection to ${config.host} successful!`, response.data);
                 showNotification('success', `Connection to ${config.host} successful`);
